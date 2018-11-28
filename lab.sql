@@ -282,8 +282,7 @@ select *
 to_char/to_date
 */
 SELECT
-    ROUND((TO_char(to_date('21:30','HH24,MI'),'HH24,MI') - to_CHAR(sysdate,'HH24,MI')),0)*60 +
-   ((TO_char(to_date('21:30','HH24,MI'),'HH24,MI') - to_CHAR(sysdate,'HH24,MI')) - (ROUND((TO_char(to_date('21:30','HH24,MI'),'HH24,MI') - to_CHAR(sysdate,'HH24,MI')),0)))*100 as Minutes
+     trunc((to_date(to_char(sysdate, 'dd-mm-yyyy ') || '21:30' , 'dd-mm-yyyy HH24:MI') - sysdate) * 24 * 60) MINUTES
 from dual
 ;
 
@@ -355,7 +354,7 @@ select  e.employee_id,
   from  employees e left join departments d on e.department_id = d.department_id
                     left join locations l on l.location_id = d.location_id
                     left join countries c on l.country_id = c.country_id
-         
+;         
   
            
 
