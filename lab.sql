@@ -18,8 +18,8 @@ SELECT  dep.*
 SELECT  cus.customer_id , 
         cus.cust_first_name || ' ' || cus.cust_last_name AS Name, 
         cust_email
-FROM    customers cus
-ORDER BY  cus.customer_id
+  FROM  customers cus
+  ORDER BY  cus.customer_id
 ;
 
 /*
@@ -42,12 +42,12 @@ SELECT  emp.LAST_NAME,
           WHEN emp.SALARY*12 => 150000 AND emp.SALARY*12 <= 200000 THEN 
             ROUND((emp.SALARY*0.65))
         END AS SALARY
-FROM    EMPLOYEES emp
-WHERE emp.SALARY*12 BETWEEN 100000 AND 200000
-ORDER BY 
-      emp.JOB_ID, 
-      emp.SALARY, 
-      emp.LAST_NAME
+  FROM    EMPLOYEES emp
+  WHERE emp.SALARY*12 BETWEEN 100000 AND 200000
+  ORDER BY 
+        emp.JOB_ID, 
+        emp.SALARY, 
+        emp.LAST_NAME
     
 ;
 /*
@@ -65,10 +65,10 @@ WHERE cntr.COUNTRY_ID IN ('DE','IT','RU')
 а в имени присутствует буква «d» (не важно, в каком регистре). Упорядочить по имени.
 Использовать оператор like и функции приведения к нужному регистру.
 */
-SELECT  emp.FIRST_NAME || ' ' || emp.LAST_NAME
-FROM EMPLOYEES emp
-WHERE emp.LAST_NAME like '_a%' and LOWER(emp.FIRST_NAME) like '%d%'
-ORDER BY 
+SELECT   emp.FIRST_NAME || ' ' || emp.LAST_NAME
+    FROM EMPLOYEES emp
+    WHERE emp.LAST_NAME like '_a%' and LOWER(emp.FIRST_NAME) like '%d%'
+    ORDER BY 
         emp.FIRST_NAME
 ;
 
@@ -79,13 +79,13 @@ ORDER BY
 Ответ: 27 строк.
 */
 SELECT *
-FROM EMPLOYEES emp
-WHERE (LENGTH(emp.FIRST_NAME) < 5 OR LENGTH(emp.LAST_NAME)<5)
-ORDER BY
-    LENGTH(emp.FIRST_NAME) + LENGTH(emp.LAST_NAME),
-    LENGTH(emp.LAST_NAME),
-    emp.LAST_NAME,
-    emp.FIRST_NAME
+  FROM EMPLOYEES emp
+  WHERE (LENGTH(emp.FIRST_NAME) < 5 OR LENGTH(emp.LAST_NAME)<5)
+  ORDER BY
+      LENGTH(emp.FIRST_NAME) + LENGTH(emp.LAST_NAME),
+      LENGTH(emp.LAST_NAME),
+      emp.LAST_NAME,
+      emp.FIRST_NAME
 ;
 
 /*
@@ -96,13 +96,13 @@ ORDER BY
 после налогов, округленная до сотен. Считаем шкалу налогообложения плоской – 18%.
 Ответ: 19 строк.
 */
-SELECT  jb.JOB_ID,
-        jb.JOB_TITLE,
-        ROUND(((jb.MAX_SALARY+jb.MIN_SALARY)/2)*0.82, 2) AS AVG_SALARY
-FROM    JOBS jb
-ORDER BY 
-        AVG_SALARY desc,
-        jb.JOB_ID
+SELECT   jb.JOB_ID,
+         jb.JOB_TITLE,
+         ROUND(((jb.MAX_SALARY+jb.MIN_SALARY)/2)*0.82, 2) AS AVG_SALARY
+  FROM   JOBS jb
+  ORDER BY 
+          AVG_SALARY desc,
+          jb.JOB_ID
 ;
 /*8. Будем считать, что все клиенты делятся на категории A, B, C. Категория A – клиенты с
 кредитным лимитом >= 3500, B >= 1000, C – все остальные. Вывести всех клиентов,
@@ -122,10 +122,10 @@ SELECT  cust.CUST_LAST_NAME,
             WHEN cust.CREDIT_LIMIT >= 3500  THEN 'Внимение, VIP-клиенты'
         END AS COMMENTS
     
-FROM CUSTOMERS cust
-ORDER BY
-        CATEGORY,
-        cust.CUST_LAST_NAME
+  FROM CUSTOMERS cust
+  ORDER BY
+         CATEGORY,
+         cust.CUST_LAST_NAME
 ;
 
 /*
@@ -169,9 +169,9 @@ to_char (указать для функции nls_date_language 3-м параметром). Вместо группиров
 */
 SELECT  DISTINCT
         TO_CHAR(ord.ORDER_DATE ,'Month', 'nls_date_language=RUSSIAN') AS MONTH
-FROM ORDERS ord
-WHERE DATE'1998-01-01' <=ord.ORDER_DATE AND ord.ORDER_DATE <DATE'1999-01-01'
-ORDER BY
+  FROM ORDERS ord
+  WHERE DATE'1998-01-01' <=ord.ORDER_DATE AND ord.ORDER_DATE <DATE'1999-01-01'
+  ORDER BY
         MONTH DESC
 ;
 
@@ -193,9 +193,9 @@ SELECT
     CASE
       WHEN  TO_CHAR(TO_DATE(sysdate,'DD.MM.YY')+ROWNUM-EXTRACT(day from sysdate),'D','NLS_DATE_LANGUAGE=RUSSIAN') >= 6 THEN 'Выходной'
     end as Comments
-from EMPLOYEES
-where rownum <= EXTRACT(DAY from last_day(sysdate))
-order by 
+  from EMPLOYEES
+  where rownum <= EXTRACT(DAY from last_day(sysdate))
+  order by 
     EXTRACT(DAY FROM DT)
 ;
 
@@ -211,9 +211,9 @@ SELECT  emp.EMPLOYEE_ID,
         emp.JOB_ID,
         emp.SALARY,
         emp.COMMISSION_PCT
-FROM EMPLOYEES emp
-WHERE emp.COMMISSION_PCT IS NOT NULL
-ORDER BY
+  FROM EMPLOYEES emp
+  WHERE emp.COMMISSION_PCT IS NOT NULL
+  ORDER BY
         emp.COMMISSION_PCT DESC,
         emp.JOB_ID
 ;
@@ -232,10 +232,10 @@ SELECT  EXTRACT(YEAR FROM ord.ORDER_DATE) as YEAR,
         SUM(CASE WHEN EXTRACT(month FROM ord.ORDER_DATE) >=7 THEN ord.ORDER_TOTAL END) AS QUART3_SUM,
         SUM(CASE WHEN EXTRACT(month FROM ord.ORDER_DATE) >=10 THEN ord.ORDER_TOTAL END) AS QUART4_SUM,
         SUM(T1.ORDER_TOTAL)AS YEAR_SUM
-FROM ORDERS ord
-WHERE date'1995-01-01'<=ord.ORDER_DATE and ord.ORDER_DATE<date'2001-01-01'
-GROUP BY 
-   EXTRACT(YEAR FROM ord.ORDER_DATE)
+  FROM ORDERS ord
+  WHERE date'1995-01-01'<=ord.ORDER_DATE and ord.ORDER_DATE<date'2001-01-01'
+  GROUP BY 
+        EXTRACT(YEAR FROM ord.ORDER_DATE)
 ;
 
 /*
@@ -256,17 +256,18 @@ select  pinf.PRODUCT_ID,
         (EXTRACT(MONTH FROM pinf.WARRANTY_PERIOD) + EXTRACT(YEAR FROM pinf.WARRANTY_PERIOD)*12) AS WARRANTY_MONTH,
         pinf.LIST_PRICE,
         pinf.CATALOG_URL
-from PRODUCT_INFORMATION pinf
-WHERE ( NOT REGEXP_LIKE(pinf.PRODUCT_NAME, '^HD') 
-        AND NOT REGEXP_LIKE(SUBSTR(pinf.PRODUCT_NAME, 1, 30), 'disk|drive|hard', 'i') 
-        AND REGEXP_LIKE(pinf.PRODUCT_NAME, '(\d+)\s*(mb|gb)', 'i')
-      )
+  from PRODUCT_INFORMATION pinf
+  WHERE ( NOT REGEXP_LIKE(pinf.PRODUCT_NAME, '^HD') 
+          AND NOT REGEXP_LIKE(SUBSTR(pinf.PRODUCT_NAME, 1, 30), 'disk|drive|hard', 'i') 
+          AND REGEXP_LIKE(pinf.PRODUCT_NAME, '(\d+)\s*(mb|gb)', 'i')
+         )
     -- \d+\s*(mb|gb)
-order by
-    case
-        when REGEXP_LIKE(pinf.PRODUCT_NAME,'GB','i') then to_number(REGEXP_SUBSTR(pinf.PRODUCT_NAME,'\s\d+\s|\s\d+|^\d+',1))*1024 
-        when REGEXP_LIKE(pinf.PRODUCT_NAME,'MB','i') then to_number(REGEXP_SUBSTR(pinf.PRODUCT_NAME,'\s\d+\s|\s\d+|^\d+',1))
-    end DESC
+  order by
+   case
+        when REGEXP_LIKE(pinf.PRODUCT_NAME,'GB','i') then cast(REGEXP_SUBSTR(REGEXP_SUBSTR(pinf.PRODUCT_NAME,'(\d+)\s*(gb|GB)'), '(\d+)\s*') as number)*1024
+        when REGEXP_LIKE(pinf.PRODUCT_NAME,'MB','i') then cast(REGEXP_SUBSTR(REGEXP_SUBSTR(pinf.PRODUCT_NAME,'(\d+)\s*(mb|MB)'),'(\d+)\s*') as number)
+   end desc
+    
 ;
 
 select *
@@ -347,6 +348,15 @@ SELECT
 FROM PRODUCT_INFORMATION T1
 WHERE REGEXP_LIKE(T1.PRODUCT_NAME, '\d+\.*\d*\D\d\.*\d*')
 ;
+
+select  e.employee_id,
+        e.first_name || ' ' || e.last_name,
+        c.country_name
+  from  employees e left join departments d on e.department_id = d.department_id
+                    left join locations l on l.location_id = d.location_id
+                    left join countries c on l.country_id = c.country_id
+         
+  
            
 
 
